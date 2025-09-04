@@ -9,9 +9,10 @@ interface AppFormProps {
   onSubmit: (app: NewApp) => void;
   onCancel: () => void;
   isLoading?: boolean;
+  userId: string;
 }
 
-export function AppForm({ app, onSubmit, onCancel, isLoading }: AppFormProps) {
+export function AppForm({ app, onSubmit, onCancel, isLoading, userId }: AppFormProps) {
   const [name, setName] = useState(app?.name || "");
   const [localIp, setLocalIp] = useState(app?.localIp || "");
   const [port, setPort] = useState(app?.port.toString() || "");
@@ -31,6 +32,7 @@ export function AppForm({ app, onSubmit, onCancel, isLoading }: AppFormProps) {
       domain: domain || null,
       subdomain: subdomain || null,
       description: description || null,
+      userId,
     });
   };
 

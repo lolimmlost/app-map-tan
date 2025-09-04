@@ -1,5 +1,6 @@
 import { integer, pgTable, text, varchar } from "drizzle-orm/pg-core";
 import { InferSelectModel, InferInsertModel } from "drizzle-orm";
+import { user } from "./auth.schema";
 
 export const app = pgTable("app", {
   id: text("id").primaryKey(),
@@ -9,6 +10,9 @@ export const app = pgTable("app", {
   port: integer("port").notNull(),
   domain: varchar("domain", { length: 253 }),
   subdomain: varchar("subdomain", { length: 253 }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   description: text("description"),
 });
 
