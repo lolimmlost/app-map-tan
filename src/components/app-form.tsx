@@ -16,6 +16,9 @@ export function AppForm({ app, onSubmit, onCancel, isLoading }: AppFormProps) {
   const [localIp, setLocalIp] = useState(app?.localIp || "");
   const [port, setPort] = useState(app?.port.toString() || "");
   const [description, setDescription] = useState(app?.description || "");
+  const [remoteIp, setRemoteIp] = useState(app?.remoteIp ?? "");
+  const [domain, setDomain] = useState(app?.domain ?? "");
+  const [subdomain, setSubdomain] = useState(app?.subdomain ?? "");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +27,9 @@ export function AppForm({ app, onSubmit, onCancel, isLoading }: AppFormProps) {
       name,
       localIp,
       port: parseInt(port, 10),
+      remoteIp: remoteIp || null,
+      domain: domain || null,
+      subdomain: subdomain || null,
       description: description || null,
     });
   };
@@ -64,6 +70,37 @@ export function AppForm({ app, onSubmit, onCancel, isLoading }: AppFormProps) {
           min="1"
           max="65535"
           required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="remoteIp">Remote IP</Label>
+        <Input
+          id="remoteIp"
+          value={remoteIp}
+          onChange={(e) => setRemoteIp(e.target.value)}
+          placeholder="203.0.113.1"
+          pattern="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="domain">Domain</Label>
+        <Input
+          id="domain"
+          value={domain}
+          onChange={(e) => setDomain(e.target.value)}
+          placeholder="example.com"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="subdomain">Subdomain</Label>
+        <Input
+          id="subdomain"
+          value={subdomain}
+          onChange={(e) => setSubdomain(e.target.value)}
+          placeholder="www"
         />
       </div>
 
