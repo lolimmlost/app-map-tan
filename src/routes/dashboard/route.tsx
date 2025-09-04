@@ -24,6 +24,7 @@ function DashboardLayout() {
           <pre className="bg-card text-card-foreground rounded-md border p-1">
             routes/dashboard/route.tsx
           </pre>
+          <h1>TESTING 2</h1>
         </div>
 
         <Button type="button" asChild className="w-fit" size="lg">
