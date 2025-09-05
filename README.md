@@ -8,6 +8,18 @@ A minimal starter template for 🏝️ TanStack Start. [→ Preview here](https:
 - [Drizzle ORM](https://orm.drizzle.team/) + PostgreSQL
 - [Better Auth](https://www.better-auth.com/)
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Authentication](#authentication)
+- [Database](#database)
+- [Components](#components)
+- [Routing](#routing)
+- [API Functions](#api-functions)
+- [Scripts](#scripts)
+- [License](#license)
+
 ## Getting Started
 
 We use **pnpm** by default, but you can modify the scripts in [package.json](./package.json) to use your preferred package manager.
@@ -42,6 +54,86 @@ We use **pnpm** by default, but you can modify the scripts in [package.json](./p
    ```
 
    The development server should now be running at [http://localhost:3000](http://localhost:3000).
+
+## Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+├── lib/                 # Core application logic
+│   ├── auth/            # Authentication logic
+│   ├── db/              # Database operations
+│   └── utils.ts         # Utility functions
+├── routes/              # Application routes
+│   ├── (auth)/          # Authentication routes
+│   ├── api/             # API routes
+│   ├── dashboard/       # Dashboard routes
+│   ├── __root.tsx       # Root layout
+│   └── index.tsx        # Home page
+└── styles.css           # Global styles
+```
+
+## Authentication
+
+This project uses [Better Auth](https://www.better-auth.com/) for authentication. The authentication system includes:
+
+- Email/password authentication
+- Social authentication (GitHub, Google)
+- Session management
+
+Key files:
+- [`src/lib/auth/auth.ts`](./src/lib/auth/auth.ts) - Better Auth configuration
+- [`src/lib/auth/auth-client.ts`](./src/lib/auth/auth-client.ts) - Client-side authentication functions
+- [`src/lib/auth/queries.ts`](./src/lib/auth/queries.ts) - Authentication queries
+- [`src/lib/auth/middleware.ts`](./src/lib/auth/middleware.ts) - Authentication middleware
+
+## Database
+
+The project uses [Drizzle ORM](https://orm.drizzle.team/) with PostgreSQL. Database operations are organized as follows:
+
+- [`src/lib/db/schema/`](./src/lib/db/schema/) - Database schema definitions
+- [`src/lib/db/queries/`](./src/lib/db/queries/) - Database queries
+- [`src/lib/db/functions/`](./src/lib/db/functions/) - Database functions
+
+### Apps Schema
+
+The main database table is for storing applications in a homelab environment:
+
+- `id` (text) - Unique identifier
+- `name` (text) - Application name
+- `localIp` (varchar) - Local IP address
+- `remoteIp` (varchar, optional) - Remote IP address
+- `port` (integer) - Port number
+- `domain` (varchar, optional) - Domain name
+- `subdomain` (varchar, optional) - Subdomain
+- `userId` (text) - Reference to user
+- `description` (text, optional) - Application description
+
+## Components
+
+The project uses [shadcn/ui](https://ui.shadcn.com/) components built on top of [Tailwind CSS](https://tailwindcss.com/).
+
+Key custom components:
+- [`AppCard`](./src/components/app-card.tsx) - Displays individual app information
+- [`AppForm`](./src/components/app-form.tsx) - Form for creating/editing apps
+- [`AppGrid`](./src/components/app-grid.tsx) - Grid layout for displaying apps
+
+## Routing
+
+The project uses [TanStack Router](https://tanstack.com/router/latest) for routing:
+
+- `/` - Home page
+- `/login` - Login page
+- `/signup` - Signup page
+- `/dashboard` - Dashboard page (requires authentication)
+
+## API Functions
+
+Database operations are exposed through API functions:
+
+- [`$createApp`](./src/lib/db/functions/apps.ts) - Create a new app
+- [`$updateApp`](./src/lib/db/functions/apps.ts) - Update an existing app
+- [`$deleteApp`](./src/lib/db/functions/apps.ts) - Delete an app
 
 ## Issue watchlist
 
