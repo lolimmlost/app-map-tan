@@ -15,9 +15,10 @@ export const Route = createFileRoute("/dashboard/")({
 function DashboardIndex() {
   const queryClient = useQueryClient();
   const { data: apps = [], isLoading, isError } = useQuery(appsQueryOptions());
-
-  // Intentionally not fetching user to avoid TS/ESLint issues in this iteration
-  const userId = "";
+  
+  // Get user from route context
+  const { user } = Route.useRouteContext();
+  const userId = user?.id || "";
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingApp, setEditingApp] = useState<App | null>(null);
