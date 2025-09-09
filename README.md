@@ -17,12 +17,16 @@ A minimal starter template for 🏝️ TanStack Start. [→ Preview here](https:
 - [Components](#components)
 - [Routing](#routing)
 - [API Functions](#api-functions)
+- [Homelab Setup](#homelab-setup)
+- [Security Considerations](#security-considerations)
+- [Testing](#testing)
+- [Deployment](#deployment)
 - [Scripts](#scripts)
 - [License](#license)
 
 ## Getting Started
 
-We use **pnpm** by default, but you can modify the scripts in [package.json](./package.json) to use your preferred package manager.
+We use **npm** by default, but you can modify the scripts in [package.json](./package.json) to use your preferred package manager.
 
 1. [Use this template](https://github.com/new?template_name=react-tanstarter&template_owner=dotnize) or clone this repository with gitpick:
 
@@ -34,7 +38,7 @@ We use **pnpm** by default, but you can modify the scripts in [package.json](./p
 2. Install dependencies:
 
    ```bash
-   pnpm install
+   npm install
    ```
 
 3. Create a `.env` file based on [`.env.example`](./.env.example).
@@ -42,7 +46,7 @@ We use **pnpm** by default, but you can modify the scripts in [package.json](./p
 4. Push the schema to your database with drizzle-kit:
 
    ```bash
-   pnpm db push
+   npm db push
    ```
 
    https://orm.drizzle.team/docs/migrations
@@ -50,7 +54,7 @@ We use **pnpm** by default, but you can modify the scripts in [package.json](./p
 5. Run the development server:
 
    ```bash
-   pnpm dev
+   npm dev
    ```
 
    The development server should now be running at [http://localhost:3000](http://localhost:3000).
@@ -135,6 +139,43 @@ Database operations are exposed through API functions:
 - [`$updateApp`](./src/lib/db/functions/apps.ts) - Update an existing app
 - [`$deleteApp`](./src/lib/db/functions/apps.ts) - Delete an app
 
+## Homelab Setup
+
+This template is designed for managing homelab applications. After setting up the project:
+
+1. Configure your `.env` for local Postgres (use docker-compose.yml for a local instance):
+   ```
+   DATABASE_URL=postgresql://user:pass@localhost:5432/homelabdb
+   ```
+
+2. Add your first app via the dashboard: Enter local IP (e.g., 192.168.1.100), port (e.g., 8080), and optional domain/subdomain for external access.
+
+3. Integrate with your network: Ensure the app server runs on a trusted LAN; use reverse proxies like Nginx for domain routing.
+
+Example entry: Name "Home Assistant", localIp "192.168.1.50", port 8123, domain "home.example.com".
+
+## Security Considerations
+
+For homelab use cases:
+
+- **Data Protection**: Stored IPs/ports/domains are sensitive; enable HTTPS and encrypt DB if exposing remotely. Use Zod for input validation in forms (add to AppForm).
+
+- **Access Controls**: Apply auth middleware to all protected routes. Limit API exposure to authenticated users only. For local access, use VPN or firewall rules to restrict dashboard to LAN IPs.
+
+- **Risks**: Avoid storing credentials in the apps table; use external secrets management. Regularly audit logs for unauthorized CRUD actions.
+
+- **Best Practices**: Run in a containerized environment (Docker) for isolation. Update dependencies frequently to patch vulnerabilities in Better Auth/Drizzle.
+
+## Testing
+
+Run tests with Vitest:
+
+```bash
+npm test
+```
+
+Current coverage: Basic integration test for AppCard. Add unit tests for queries/functions (e.g., createApp) and e2e for auth/CRUD flows using Testing Library. Goal: 80% coverage. Configure in vitest.config.ts for reports.
+
 ## Issue watchlist
 
 - [React Compiler docs](https://react.dev/learn/react-compiler), [Working Group](https://github.com/reactwg/react-compiler/discussions) - React Compiler is in RC.
@@ -145,13 +186,13 @@ Database operations are exposed through API functions:
 
 #### Scripts
 
-These scripts in [package.json](./package.json#L5) use **pnpm** by default, but you can modify them to use your preferred package manager.
+These scripts in [package.json](./package.json#L5) use **npm** by default, but you can modify them to use your preferred package manager.
 
 - **`auth:generate`** - Regenerate the [auth db schema](./src/lib/db/schema/auth.schema.ts) if you've made changes to your Better Auth [config](./src/lib/auth/auth.ts).
-- **`db`** - Run drizzle-kit commands. (e.g. `pnpm db generate` to generate a migration)
-- **`ui`** - The shadcn/ui CLI. (e.g. `pnpm ui add button` to add the button component)
+- **`db`** - Run drizzle-kit commands. (e.g. `npm db generate` to generate a migration)
+- **`ui`** - The shadcn/ui CLI. (e.g. `npm ui add button` to add the button component)
 - **`format`**, **`lint`**, **`check-types`** - Run Prettier, ESLint, and check TypeScript types respectively.
-  - **`check`** - Run all three above. (e.g. `pnpm check`)
+  - **`check`** - Run all three above. (e.g. `npm check`)
 - **`deps`** - Selectively upgrade dependencies via taze.
 
 #### Utilities
